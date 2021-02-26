@@ -1,0 +1,9 @@
+## Approaches
+* used dependency injections to improve code structure and increase unit testability
+* used an input data validation on the server and client side
+
+## Installation requirements
+* .net core 3.1
+* msbuilder
+
+## Improvements

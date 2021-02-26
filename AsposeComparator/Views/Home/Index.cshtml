@@ -1,0 +1,74 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare images</title>
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.7/jquery.jgrowl.min.css" />
+</head>
+<body class="page">
+    <div class="header d-flex">
+        <h2>Compare images</h2>
+    </div>
+    <div>
+        <div class="preview">
+            <div class="preview-container">
+                <input name="file" type="file" id="first-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
+                <div class="image-container mr-1" id="first-image-container">
+                    <button class="btn btn-outline-light" id="open-first-file">Open</button>
+                    <img id="first-preview" alt="first file preview" class="image-preview" src="/file/preview?fileName=temp1.png" />
+                    <div class="loader text-secondary">
+                        <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
+                    </div>
+                </div>
+                
+                <input name="file" type="file" id="second-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
+                <div class="image-container ml-1" id="second-image-container">
+                    <button class="btn btn-outline-light" id="open-second-file">Open</button>
+                    <img id="second-preview" alt="second file preview" class="image-preview" src="/file/preview?fileName=temp3.png" />
+                    <div class="loader text-secondary">
+                        <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="result">
+            <div class="mr-1">
+                <div class="tools">
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" for="tolerance">Tolerance</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="tolerance" type="range" value="0" min="0" max="100" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label" for="max-differences">Max differences</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="max-differences" type="number" value="0" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-7 offset-md-5">
+                            <button id="compare" class="btn btn-outline-warning">Compare</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-1">
+                <img id="result" class="image-preview" src="" />
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="~/js/main.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.7/jquery.jgrowl.min.js"></script>
+</body>
+</html>

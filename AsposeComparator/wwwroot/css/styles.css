@@ -1,0 +1,106 @@
+﻿.page {
+    background: #1e2024;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tools {
+    width: 400px;
+    margin-left: auto;
+    padding: 15px;
+}
+
+    .tools label {
+        color: white;
+    }
+
+.preview {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 75px;
+}
+
+.preview-container {
+    display: flex;
+    justify-content: center;
+}
+
+.header {
+    position: fixed;
+    background: #2d2e37;
+    height: 50px;
+    background: #2d2e37;
+    width: 100%;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.header > div {
+    flex: 1;
+    text-align: center;
+}
+
+.header h2 {
+    color: #cbcbcb;
+}
+
+.title {
+    color: white;
+}
+
+.image-preview {
+    max-width: calc(100vw / 2 - 20px);
+    max-height: calc(100vh / 2 - 50px);
+}
+
+.result {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0;
+}
+
+.result > div {
+    width: 50%;
+}
+
+.image-container {
+    border: 3px dashed gray;
+    min-height: 200px;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container > div, .image-container > img {
+    display: none;
+}
+
+.image-container.loaded {
+    border: none;
+    min-width: unset;
+    min-height: unset;
+}
+
+.image-container.loaded > img {
+    display: inline;
+}
+
+.image-container.loaded > button {
+    display: none;
+}
+
+.image-container.loading > button {
+    display: none;
+}
+
+.image-container.loading > div {
+    display: block;
+}
