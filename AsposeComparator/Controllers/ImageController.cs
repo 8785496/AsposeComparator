@@ -16,9 +16,9 @@ namespace AsposeComparator.Controllers
             _compareService = compareService;
         }
 
-        public IActionResult CompareImages(string fileName1, string fileName2)
+        public IActionResult CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
         {
-            return Ok(_compareService.CompareImages(fileName1, fileName2));
+            return Ok(_compareService.CompareImages(fileName1, fileName2, tolerance, maxDifferences));
         }
     }
 }

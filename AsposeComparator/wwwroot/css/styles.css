@@ -12,9 +12,9 @@
     padding: 15px;
 }
 
-    .tools label {
-        color: white;
-    }
+.tools label {
+    color: white;
+}
 
 .preview {
     width: 100%;
@@ -77,10 +77,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: white;
+    position: relative;
 }
 
-.image-container > div, .image-container > img {
+.image-container > div, .image-container > img, .image-container > span {
     display: none;
+}
+
+.image-container > span {
+    text-shadow: 0 0 5px black;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 24px;
+    vertical-align: middle;
 }
 
 .image-container.loaded {
@@ -95,6 +110,10 @@
 
 .image-container.loaded > button {
     display: none;
+}
+
+.image-container.loaded:hover > span {
+    display: block;
 }
 
 .image-container.loading > button {

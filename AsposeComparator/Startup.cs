@@ -1,5 +1,6 @@
 using AsposeComparator.Interfaces;
 using AsposeComparator.Services;
+using AsposeComparator.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,7 @@ namespace AsposeComparator
             services.AddControllersWithViews();
             services.AddScoped<ICompareService, CompareService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IColorComparator, RgbColorComparator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

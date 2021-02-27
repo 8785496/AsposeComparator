@@ -63,7 +63,7 @@
             }
         });
 
-        $("#file").val(null);
+        $("#first-file").val(null);
     });
 
     $('#first-preview').on('load', () => {
@@ -97,11 +97,27 @@
             }
         });
 
-        $("#file").val(null);
+        $("#second-file").val(null);
     });
 
     $('#second-preview').on('load', () => {
         setUploadStatus('second-image-container', 'loaded');
+    });
+
+    $('#tolerance').on('input', e => {
+        $('#tolerance-value').text(e.target.value);
+    });
+
+    $('#first-image-container > span').click(() => {
+        setUploadStatus('first-image-container', '');
+        $('#first-preview').attr('src', '');
+        firstFileName = '';
+    });
+
+    $('#second-image-container > span').click(() => {
+        setUploadStatus('second-image-container', '');
+        $('#second-preview').attr('src', '');
+        secondFileName = '';
     });
 
     function setUploadStatus(id, status) {

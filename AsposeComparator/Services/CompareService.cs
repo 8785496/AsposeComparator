@@ -12,7 +12,14 @@ namespace AsposeComparator.Services
 {
     public class CompareService : ICompareService
     {
-        public CompareResponse CompareImages(string fileName1, string fileName2)
+        private readonly IColorComparator _colorComparator;
+        
+        public CompareService(IColorComparator colorComparator)
+        {
+            _colorComparator = colorComparator;
+        }
+        
+        public CompareResponse CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
         {
             var filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName1);
             var filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName2);
@@ -36,7 +43,7 @@ namespace AsposeComparator.Services
                     {
                         var pixel1 = bitmap1.GetPixel(i, j);
                         var pixel2 = bitmap2.GetPixel(i, j);
-                        if (!IsEqualColors(pixel1, pixel2))
+                        if (!_colorComparator.IsEqual(pixel1, pixel2, tolerance))
                         {
                             isEquals = false;
                             differences.Add(new Point(i, j));

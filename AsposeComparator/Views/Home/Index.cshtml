@@ -27,6 +27,7 @@
                     <div class="loader text-secondary">
                         <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
                     </div>
+                    <span>&times;</span>
                 </div>
                 
                 <input name="file" type="file" id="second-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
@@ -36,6 +37,7 @@
                     <div class="loader text-secondary">
                         <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
                     </div>
+                    <span>&times;</span>
                 </div>
             </div>
         </div>
@@ -44,7 +46,9 @@
             <div class="mr-1">
                 <div class="tools">
                     <div class="form-group row">
-                        <label class="col-md-5 col-form-label" for="tolerance">Tolerance</label>
+                        <label class="col-md-5 col-form-label" for="tolerance">
+                            Tolerance (<span id="tolerance-value">0</span>%)
+                        </label>
                         <div class="col-md-7">
                             <input class="form-control" id="tolerance" type="range" value="0" min="0" max="100" />
                         </div>
