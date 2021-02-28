@@ -64,12 +64,14 @@ namespace AsposeComparator.Services
                 //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
                 //}
 
-                var pen = new Pen(Color.Red);
-                var graphics = Graphics.FromImage(bitmap1);
-                var rectangles = _geometryService.GetRectangles(width, height, differences, maxDifferences);
-                foreach (var rect in rectangles)
+                using (var graphics = Graphics.FromImage(bitmap1))
                 {
-                    graphics.DrawRectangle(pen, rect);
+                    var pen = new Pen(Color.Red);
+                    var rectangles = _geometryService.GetRectangles(width, height, differences, maxDifferences);
+                    foreach (var rect in rectangles)
+                    {
+                        graphics.DrawRectangle(pen, rect);
+                    }
                 }
                 bitmap1.Save(resultPath);
             }
@@ -128,12 +130,14 @@ namespace AsposeComparator.Services
                 //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
                 //}
 
-                var pen = new Pen(Color.Red);
-                var graphics = Graphics.FromImage(bitmap1);
-                var rectangles = await _geometryService.GetRectanglesAsync(width, height, differences, maxDifferences);
-                foreach (var rect in rectangles)
+                using (var graphics = Graphics.FromImage(bitmap1))
                 {
-                    graphics.DrawRectangle(pen, rect);
+                    var pen = new Pen(Color.Red);
+                    var rectangles = await _geometryService.GetRectanglesAsync(width, height, differences, maxDifferences);
+                    foreach (var rect in rectangles)
+                    {
+                        graphics.DrawRectangle(pen, rect);
+                    }
                 }
                 bitmap1.Save(resultPath);
             }

@@ -1,4 +1,4 @@
-﻿## Approaches
+## Approaches
 * used dependency injections to improve the code structure and increase unit testability
 * used an input data validation on the server and client-side
 * used notifications about errors in UI
@@ -11,3 +11,4 @@
 ## Improvements
 * change recursion to loop
 * add weight coefficients to the color comparison algorithm
+* add an algorithm to shift the images, if necessary

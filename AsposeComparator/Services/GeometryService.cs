@@ -8,7 +8,13 @@ using System.Threading.Tasks;
 namespace AsposeComparator.Services
 {
     public class GeometryService : IGeometryService
-    {       
+    {
+        /// <summary>
+        /// Returns a list of rectangles that surround the differences.
+        /// The points are grouped together using a recursive algorithm. If a point borders another point on the right, left, top, or bottom, then these points are grouped together. 
+        /// The search for points continues until there are no bordering points or the border of the image is reached.
+        /// Point group boundaries are recalculated when a new point is added to the group.
+        /// </summary>
         public List<Rectangle> GetRectangles(int width, int height, List<Point> points, int maxResults = 0)
         {
             var usedPoints = new Dictionary<string, bool>();
@@ -35,6 +41,12 @@ namespace AsposeComparator.Services
             return rectangles;
         }
 
+        /// <summary>
+        /// Returns a list of rectangles that surround the differences.
+        /// The points are grouped together using a recursive algorithm. If a point borders to the right, left, above or below another point, 
+        /// then these points are combined into a group. The search for points is determined until there are no bordering points or the border of the image is reached.
+        /// Point group boundaries are recalculated when a new point is added to the group.
+        /// </summary>
         public async Task<List<Rectangle>> GetRectanglesAsync(int width, int height, List<Point> points, int maxResults = 0)
         {
             var usedPoints = new Dictionary<string, bool>();
