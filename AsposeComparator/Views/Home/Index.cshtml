@@ -29,7 +29,7 @@
                     </div>
                     <span>&times;</span>
                 </div>
-                
+
                 <input name="file" type="file" id="second-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
                 <div class="image-container ml-1" id="second-image-container">
                     <button class="btn btn-outline-light" id="open-second-file">Open</button>
@@ -54,7 +54,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-5 col-form-label" for="max-differences">Max differences</label>
+                        <label class="col-md-5 col-form-label" for="max-differences">
+                            Max differences <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="0 means all differences"></i>
+                        </label>
                         <div class="col-md-7">
                             <input class="form-control" id="max-differences" type="number" value="10" />
                         </div>
@@ -84,6 +86,7 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="~/js/main.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.7/jquery.jgrowl.min.js"></script>
 </body>

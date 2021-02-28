@@ -53,8 +53,8 @@
     $('#first-file').on('change', e => {
         if (!e.target.files[0]) { return; }
 
-        if (e.target.files[0].size / 1024 / 1024 > 50) {
-            $.jGrowl("File larger than 50 Mb", { header: 'Error' });
+        if (e.target.files[0].size / 1024 / 1024 > 10) {
+            $.jGrowl("File larger than 10 Mb", { header: 'Error' });
             return;
         }
 
@@ -87,8 +87,8 @@
     $('#second-file').on('change', e => {
         if (!e.target.files[0]) { return; }
 
-        if (e.target.files[0].size / 1024 / 1024 > 50) {
-            $.jGrowl("File larger than 50 Mb", { header: 'Error' });
+        if (e.target.files[0].size / 1024 / 1024 > 10) {
+            $.jGrowl("File larger than 10 Mb", { header: 'Error' });
             return;
         }
 
@@ -133,6 +133,8 @@
         $('#second-preview').attr('src', '');
         secondFileName = '';
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
 
     function setUploadStatus(id, status) {
         const element = $(`#${id}`);
