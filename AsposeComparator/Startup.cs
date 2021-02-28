@@ -30,6 +30,7 @@ namespace AsposeComparator
             services.AddScoped<ICompareService, CompareService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IColorComparator, RgbColorComparator>();
+            services.AddScoped<IGeometryService, GeometryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,17 +1,17 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using AsposeComparator.Models;
 using System.Drawing;
 
 namespace AsposeComparatorTests
 {
-    public class RgbColorComparatorTests
+    class HsvColorComparatorTests
     {
-        private RgbColorComparator _comparator;
+        private HsvColorComparator _comparator;
 
         [SetUp]
         public void Setup()
         {
-            _comparator = new RgbColorComparator();
+            _comparator = new HsvColorComparator();
         }
 
         [Test]

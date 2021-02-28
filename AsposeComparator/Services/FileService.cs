@@ -30,11 +30,28 @@ namespace AsposeComparator.Services
                 }
                 return new FileInfoResponse
                 { 
-                    FileName = fileName,
-                    ContentType = "image/png"
+                    FileName = fileName
                 };
             }
             throw new Exception("File not saved");
+        }
+
+        public string GetContentType(string fileName)
+        {
+            var ext = Path.GetExtension(fileName) ?? "";
+            if (ext.ToLower().Contains("jpg") || (ext.ToLower().Contains("jpeg")))
+            {
+                return "image/jpeg";
+            }
+            if (ext.ToLower().Contains("png"))
+            {
+                return "image/png";
+            }
+            if (ext.ToLower().Contains("bmp"))
+            {
+                return "image/bmp";
+            }
+            return "image/*";
         }
     }
 }

@@ -6,17 +6,18 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace AsposeComparator.Services
 {
     public class CompareService : ICompareService
     {
-        private readonly IColorComparator _colorComparator;
+        private IColorComparator _colorComparator;
+        private readonly IGeometryService _geometryService;
         
-        public CompareService(IColorComparator colorComparator)
+        public CompareService(IColorComparator colorComparator, IGeometryService geometryService)
         {
             _colorComparator = colorComparator;
+            _geometryService = geometryService;
         }
         
         public CompareResponse CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
@@ -24,10 +25,9 @@ namespace AsposeComparator.Services
             var filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName1);
             var filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName2);
             
-            var isEquals = true;
             var differences = new List<Point>();
 
-            var resultFileName = Guid.NewGuid().ToString() + ".png";
+            var resultFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName1);
             var resultPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", resultFileName);
 
             using (var bitmap1 = new Bitmap(filePath1))
@@ -36,6 +36,14 @@ namespace AsposeComparator.Services
                 var width = bitmap1.Width;
                 var height = bitmap1.Height;
 
+                if (width != bitmap2.Width || height != bitmap2.Height)
+                {
+                    return new CompareResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Files have different sizes"
+                    };
+                }
 
                 for (int i = 0; i < width; i++)
                 {
@@ -45,16 +53,23 @@ namespace AsposeComparator.Services
                         var pixel2 = bitmap2.GetPixel(i, j);
                         if (!_colorComparator.IsEqual(pixel1, pixel2, tolerance))
                         {
-                            isEquals = false;
                             differences.Add(new Point(i, j));
                         }
                     }
                 }
 
-                var color = Color.FromArgb(255, 0, 0);
-                foreach (var difference in differences)
+                //code for debugging
+                //foreach (var difference in differences)
+                //{
+                //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
+                //}
+
+                var pen = new Pen(Color.Red);
+                var graphics = Graphics.FromImage(bitmap1);
+                var rectangles = _geometryService.GetRectangles(width, height, differences, maxDifferences);
+                foreach (var rect in rectangles)
                 {
-                    bitmap1.SetPixel(difference.X, difference.Y, color);
+                    graphics.DrawRectangle(pen, rect);
                 }
                 bitmap1.Save(resultPath);
             }
@@ -63,28 +78,79 @@ namespace AsposeComparator.Services
             {
                 FileName1 = fileName1,
                 FileName2 = fileName2,
-                IsEquals = isEquals,
-                ResultFileName = resultFileName
+                ResultFileName = resultFileName,
+                IsSuccess = true
             };
             
         }
 
-        private static bool IsEqualColors(Color color1, Color color2)
+        public async Task<CompareResponse> CompareImagesAsync(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
         {
-            return color1.R == color2.R && color1.G == color2.G && color1.B == color2.B;
+            var filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName1);
+            var filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName2);
+
+            var differences = new List<Point>();
+
+            var resultFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName1);
+            var resultPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", resultFileName);
+
+            using (var bitmap1 = new Bitmap(filePath1))
+            using (var bitmap2 = new Bitmap(filePath2))
+            {
+                var width = bitmap1.Width;
+                var height = bitmap1.Height;
+
+                if (width != bitmap2.Width || height != bitmap2.Height)
+                {
+                    return new CompareResponse
+                    {
+                        IsSuccess = false,
+                        Message = "Files have different sizes"
+                    };
+                }
+
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+                        var pixel1 = bitmap1.GetPixel(i, j);
+                        var pixel2 = bitmap2.GetPixel(i, j);
+                        if (!_colorComparator.IsEqual(pixel1, pixel2, tolerance))
+                        {
+                            differences.Add(new Point(i, j));
+                        }
+                    }
+                }
+
+                //code for debugging
+                //foreach (var difference in differences)
+                //{
+                //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
+                //}
+
+                var pen = new Pen(Color.Red);
+                var graphics = Graphics.FromImage(bitmap1);
+                var rectangles = await _geometryService.GetRectanglesAsync(width, height, differences, maxDifferences);
+                foreach (var rect in rectangles)
+                {
+                    graphics.DrawRectangle(pen, rect);
+                }
+                bitmap1.Save(resultPath);
+            }
+
+            return new CompareResponse
+            {
+                FileName1 = fileName1,
+                FileName2 = fileName2,
+                ResultFileName = resultFileName,
+                IsSuccess = true
+            };
+
         }
 
-        private static ImageCodecInfo GetEncoderInfo(String mimeType)
+        public void SetColorComparator(IColorComparator colorComparator)
         {
-            int j;
-            ImageCodecInfo[] encoders;
-            encoders = ImageCodecInfo.GetImageEncoders();
-            for (j = 0; j < encoders.Length; ++j)
-            {
-                if (encoders[j].MimeType == mimeType)
-                    return encoders[j];
-            }
-            return null;
+            _colorComparator = colorComparator;
         }
     }
 }

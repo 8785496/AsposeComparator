@@ -1,4 +1,5 @@
 ﻿using AsposeComparator.Interfaces;
+using AsposeComparator.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,21 @@ namespace AsposeComparator.Controllers
             _compareService = compareService;
         }
 
-        public IActionResult CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
+        /// <summary>
+        /// Returns the filename of the comparison results
+        /// </summary>
+        public async Task<IActionResult> CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0, ColorModelEnum colorModel = ColorModelEnum.Rgb)
         {
-            return Ok(_compareService.CompareImages(fileName1, fileName2, tolerance, maxDifferences));
+            if (colorModel == ColorModelEnum.Argb)
+            {
+                _compareService.SetColorComparator(new ArgbColorComparator());
+            }
+            else if (colorModel == ColorModelEnum.Hsv)
+            {
+                _compareService.SetColorComparator(new HsvColorComparator());
+            }
+            
+            return Ok(await _compareService.CompareImagesAsync(fileName1, fileName2, tolerance, maxDifferences));
         }
     }
 }

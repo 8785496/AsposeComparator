@@ -12,5 +12,6 @@ namespace AsposeComparator.Interfaces
     {
         public FileStream GetFileStream(string fileName);
         Task<FileInfoResponse> SaveFile(IFormFile file);
+        string GetContentType(string fileName);
     }
 }

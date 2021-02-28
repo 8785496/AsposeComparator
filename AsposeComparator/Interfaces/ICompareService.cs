@@ -8,6 +8,8 @@ namespace AsposeComparator.Interfaces
 {
     public interface ICompareService
     {
-        CompareResponse CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0);
+        CompareResponse CompareImages(string fileName1, string fileName2, int tolerance, int maxDifferences);
+        Task<CompareResponse> CompareImagesAsync(string fileName1, string fileName2, int tolerance, int maxDifferences);
+        void SetColorComparator(IColorComparator colorComparator);
     }
 }

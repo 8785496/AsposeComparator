@@ -18,11 +18,17 @@ namespace AsposeComparator.Controllers
             _fileService = fileService;
         }
         
+        /// <summary>
+        /// Returns image file
+        /// </summary>
         public IActionResult Preview(string fileName)
         {
-            return File(_fileService.GetFileStream(fileName), "image/png");
+            return File(_fileService.GetFileStream(fileName), _fileService.GetContentType(fileName));
         }
 
+        /// <summary>
+        /// Saves an image on the server
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Upload(IFormFile file)
         {

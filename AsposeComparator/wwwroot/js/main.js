@@ -16,14 +16,28 @@
         }
 
         const tolerance = $('#tolerance').val();
+        const colorModel = $('#color-model').val();
 
         $.ajax({
-            url: `/image/compareImages?fileName1=${firstFileName}&fileName2=${secondFileName}&tolerance=${tolerance}&maxDifferences=${maxDifferences}`,
+            url: `/image/compareImages?fileName1=${firstFileName}&fileName2=${secondFileName}&tolerance=${tolerance}&maxDifferences=${maxDifferences}&colorModel=${colorModel}`,
+            beforeSend: () => {
+                $('#result').attr('src', '');
+                $('#compare-loader').removeClass('hidden');
+                $('#compare').attr('disabled', 'disabled');
+            },
             success: data => {
-                $('#result').attr('src', `/file/preview?fileName=${data.resultFileName}`);
+                if (data.isSuccess) {
+                    $('#result').attr('src', `/file/preview?fileName=${data.resultFileName}`);
+                } else {
+                    $.jGrowl(data.message, { header: 'Error' });
+                }
             },
             error: () => {
                 $.jGrowl("Server error", { header: 'Error' });
+            },
+            complete: () => {
+                $('#compare-loader').addClass('hidden');
+                $('#compare').attr('disabled', false);
             }
         })
     });
