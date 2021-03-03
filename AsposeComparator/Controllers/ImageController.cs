@@ -1,6 +1,7 @@
 ﻿using AsposeComparator.Interfaces;
 using AsposeComparator.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace AsposeComparator.Controllers
     public class ImageController : Controller
     {
         private readonly ICompareService _compareService;
+        private readonly ILogger<ImageController> _logger;
 
-        public ImageController(ICompareService compareService)
+        public ImageController(ICompareService compareService, ILogger<ImageController> logger)
         {
             _compareService = compareService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -30,8 +33,21 @@ namespace AsposeComparator.Controllers
             {
                 _compareService.SetColorComparator(new HsvColorComparator());
             }
-            
-            return Ok(await _compareService.CompareImagesAsync(fileName1, fileName2, tolerance, maxDifferences));
+
+            try
+            {
+                return Ok(await _compareService.CompareImagesAsync(fileName1, fileName2, tolerance, maxDifferences));
+            }
+            catch (RecursionException e)
+            {
+                _logger.LogError(e.StackTrace);
+                return Ok(new CompareResponse { Message = e.Message, IsSuccess = false });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.StackTrace);
+                return Ok(new CompareResponse { Message = "Server error", IsSuccess = false });
+            }
         }
     }
 }
