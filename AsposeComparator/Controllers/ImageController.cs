@@ -40,12 +40,12 @@ namespace AsposeComparator.Controllers
             }
             catch (RecursionException e)
             {
-                _logger.LogError(e.StackTrace);
+                _logger.LogError(e.StackTrace + $"\n\nfName1={fileName1}, fName2={fileName2}, tolerance={tolerance}, max={maxDifferences}, model={colorModel}");
                 return Ok(new CompareResponse { Message = e.Message, IsSuccess = false });
             }
             catch (Exception e)
             {
-                _logger.LogError(e.StackTrace);
+                _logger.LogError(e.StackTrace + $"\n\nfName1={fileName1}, fName2={fileName2}, tolerance={tolerance}, max={maxDifferences}, model={colorModel}");
                 return Ok(new CompareResponse { Message = "Server error", IsSuccess = false });
             }
         }
