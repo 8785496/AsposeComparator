@@ -11,4 +11,4 @@
 ## Improvements
 * change recursion to loop
 * add weight coefficients to the color comparison algorithm
-* add an algorithm to shift the images, if necessary
+* use BitmapData.Scan0 property to get pixel colors faster

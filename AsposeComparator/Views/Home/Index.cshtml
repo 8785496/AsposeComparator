@@ -23,7 +23,7 @@
                 <input name="file" type="file" id="first-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
                 <div class="image-container mr-1" id="first-image-container">
                     <button class="btn btn-outline-light" id="open-first-file">Open</button>
-                    <img id="first-preview" alt="first file preview" class="image-preview" src="/file/preview?fileName=temp1.png" />
+                    <img id="first-preview" alt="first file preview" class="image-preview" src="" />
                     <div class="loader text-secondary">
                         <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
                     </div>
@@ -33,7 +33,7 @@
                 <input name="file" type="file" id="second-file" class="hidden" accept=".jpg, .jpeg, .png, .bmp" />
                 <div class="image-container ml-1" id="second-image-container">
                     <button class="btn btn-outline-light" id="open-second-file">Open</button>
-                    <img id="second-preview" alt="second file preview" class="image-preview" src="/file/preview?fileName=temp3.png" />
+                    <img id="second-preview" alt="second file preview" class="image-preview" src="" />
                     <div class="loader text-secondary">
                         <i class="fa fas fa-4x fa-spin fa-circle-notch"></i>
                     </div>
@@ -47,10 +47,10 @@
                 <div class="tools">
                     <div class="form-group row">
                         <label class="col-md-5 col-form-label" for="tolerance">
-                            Tolerance (<span id="tolerance-value">0</span>%)
+                            Tolerance (<span id="tolerance-value">25</span>%)
                         </label>
                         <div class="col-md-7">
-                            <input class="form-control" id="tolerance" type="range" value="0" min="0" max="100" />
+                            <input class="form-control" id="tolerance" type="range" value="25" min="0" max="100" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -58,7 +58,7 @@
                             Max differences <i class="far fa-question-circle" data-toggle="tooltip" data-placement="top" title="0 means all differences"></i>
                         </label>
                         <div class="col-md-7">
-                            <input class="form-control" id="max-differences" type="number" value="10" />
+                            <input class="form-control" id="max-differences" type="number" value="100" />
                         </div>
                     </div>
                     <div class="form-group row">

@@ -16,4 +16,13 @@
     <ProjectReference Include="..\AsposeComparator\AsposeComparator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Uploads\test1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Uploads\test2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -13,22 +13,24 @@ namespace AsposeComparator.Services
     {
         private IColorComparator _colorComparator;
         private readonly IGeometryService _geometryService;
-        
-        public CompareService(IColorComparator colorComparator, IGeometryService geometryService)
+        private readonly IFileService _fileService;
+
+        public CompareService(IColorComparator colorComparator, IGeometryService geometryService, IFileService fileService)
         {
             _colorComparator = colorComparator;
             _geometryService = geometryService;
+            _fileService = fileService;
         }
         
         public CompareResponse CompareImages(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
         {
-            var filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName1);
-            var filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName2);
-            
+            var filePath1 = _fileService.GetPath(fileName1);
+            var filePath2 = _fileService.GetPath(fileName2);
+
             var differences = new List<Point>();
 
             var resultFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName1);
-            var resultPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", resultFileName);
+            var resultPath = _fileService.GetPath(resultFileName);
 
             using (var bitmap1 = new Bitmap(filePath1))
             using (var bitmap2 = new Bitmap(filePath2))
@@ -45,24 +47,24 @@ namespace AsposeComparator.Services
                     };
                 }
 
-                for (int i = 0; i < width; i++)
+                var shift = GetImageShift(bitmap1, bitmap2);
+                var x1 = shift.X < 0 ? 0 - shift.X : 0;
+                var x2 = shift.X < 0 ? width : width - shift.X;
+                var y1 = shift.Y < 0 ? 0 - shift.Y : 0;
+                var y2 = shift.Y < 0 ? height : height - shift.Y;
+
+                for (int i = x1; i < x2; i++)
                 {
-                    for (int j = 0; j < height; j++)
+                    for (int j = y1; j < y2; j++)
                     {
                         var pixel1 = bitmap1.GetPixel(i, j);
-                        var pixel2 = bitmap2.GetPixel(i, j);
+                        var pixel2 = bitmap2.GetPixel(i + shift.X, j + shift.Y);
                         if (!_colorComparator.IsEqual(pixel1, pixel2, tolerance))
                         {
                             differences.Add(new Point(i, j));
                         }
                     }
                 }
-
-                //code for debugging
-                //foreach (var difference in differences)
-                //{
-                //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
-                //}
 
                 using (var graphics = Graphics.FromImage(bitmap1))
                 {
@@ -83,73 +85,55 @@ namespace AsposeComparator.Services
                 ResultFileName = resultFileName,
                 IsSuccess = true
             };
-            
         }
 
         public async Task<CompareResponse> CompareImagesAsync(string fileName1, string fileName2, int tolerance = 0, int maxDifferences = 0)
         {
-            var filePath1 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName1);
-            var filePath2 = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName2);
+            return await Task.FromResult(CompareImages(fileName1, fileName2, tolerance, maxDifferences));
+        }
 
-            var differences = new List<Point>();
+        public Point GetImageShift(Bitmap bitmap1, Bitmap bitmap2)
+        {
+            var width = bitmap1.Width;
+            var height = bitmap1.Height;
+            var shiftPoint = new Point();
+            var minErrorSum = 0.0;
 
-            var resultFileName = Guid.NewGuid().ToString() + Path.GetExtension(fileName1);
-            var resultPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", resultFileName);
-
-            using (var bitmap1 = new Bitmap(filePath1))
-            using (var bitmap2 = new Bitmap(filePath2))
+            for (int m = -2; m < 3; m++) // shift by x
             {
-                var width = bitmap1.Width;
-                var height = bitmap1.Height;
-
-                if (width != bitmap2.Width || height != bitmap2.Height)
+                for (int n = -2; n < 3; n++) // shift by y
                 {
-                    return new CompareResponse
-                    {
-                        IsSuccess = false,
-                        Message = "Files have different sizes"
-                    };
-                }
+                    var errorSum = 0.0;
+                    var x1 = m < 0 ? 0 - m : 0;
+                    var x2 = m < 0 ? width : width - m;
+                    var y1 = n < 0 ? 0 - n : 0;
+                    var y2 = n < 0 ? height : height - n;
 
-                for (int i = 0; i < width; i++)
-                {
-                    for (int j = 0; j < height; j++)
+                    for (int i = x1; i < x2; i++)
                     {
-                        var pixel1 = bitmap1.GetPixel(i, j);
-                        var pixel2 = bitmap2.GetPixel(i, j);
-                        if (!_colorComparator.IsEqual(pixel1, pixel2, tolerance))
+                        for (int j = y1; j < y2; j++)
                         {
-                            differences.Add(new Point(i, j));
+                            var pixel1 = bitmap1.GetPixel(i, j);
+                            var pixel2 = bitmap2.GetPixel(i + m, j + n);
+
+                            errorSum += _colorComparator.GetDistance(pixel1, pixel2);
                         }
                     }
-                }
 
-                //code for debugging
-                //foreach (var difference in differences)
-                //{
-                //    bitmap1.SetPixel(difference.X, difference.Y, Color.Blue);
-                //}
-
-                using (var graphics = Graphics.FromImage(bitmap1))
-                {
-                    var pen = new Pen(Color.Red);
-                    var rectangles = await _geometryService.GetRectanglesAsync(width, height, differences, maxDifferences);
-                    foreach (var rect in rectangles)
+                    if (m == -2 && n == -2)
                     {
-                        graphics.DrawRectangle(pen, rect);
+                        shiftPoint = new Point(m, n);
+                        minErrorSum = errorSum;
+                    } 
+                    else if (minErrorSum > errorSum)
+                    {
+                        minErrorSum = errorSum;
+                        shiftPoint = new Point(m, n);
                     }
                 }
-                bitmap1.Save(resultPath);
             }
 
-            return new CompareResponse
-            {
-                FileName1 = fileName1,
-                FileName2 = fileName2,
-                ResultFileName = resultFileName,
-                IsSuccess = true
-            };
-
+            return shiftPoint;
         }
 
         public void SetColorComparator(IColorComparator colorComparator)

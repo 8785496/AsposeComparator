@@ -9,5 +9,6 @@ namespace AsposeComparator.Interfaces
     public interface IColorComparator
     {
         bool IsEqual(Color color1, Color color2, int tolerance);
+        double GetDistance(Color color1, Color color2);
     }
 }

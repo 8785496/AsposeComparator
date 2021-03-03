@@ -32,39 +32,10 @@ namespace AsposeComparator.Services
                 }
                 var rectangle = new Rectangle(point.X, point.Y, 1, 1);
                 GetRectangle(ref rectangle, point, usedPoints, width, height);
-                rectangles.Add(rectangle);
-                if (maxResults > 0 && rectangles.Count >= maxResults)
+                if (rectangle.Width * rectangle.Height >= 8)
                 {
-                    break;
+                    rectangles.Add(rectangle);
                 }
-            }
-            return rectangles;
-        }
-
-        /// <summary>
-        /// Returns a list of rectangles that surround the differences.
-        /// The points are grouped together using a recursive algorithm. If a point borders to the right, left, above or below another point, 
-        /// then these points are combined into a group. The search for points is determined until there are no bordering points or the border of the image is reached.
-        /// Point group boundaries are recalculated when a new point is added to the group.
-        /// </summary>
-        public async Task<List<Rectangle>> GetRectanglesAsync(int width, int height, List<Point> points, int maxResults = 0)
-        {
-            var usedPoints = new Dictionary<string, bool>();
-            foreach (var point in points)
-            {
-                usedPoints.Add($"{point.X},{point.Y}", false);
-            }
-
-            var rectangles = new List<Rectangle>();
-            foreach (var point in points)
-            {
-                if (usedPoints[$"{point.X},{point.Y}"])
-                {
-                    continue;
-                }
-                var rectangle = new Rectangle(point.X, point.Y, 1, 1);
-                GetRectangle(ref rectangle, point, usedPoints, width, height);
-                rectangles.Add(rectangle);
                 if (maxResults > 0 && rectangles.Count >= maxResults)
                 {
                     break;

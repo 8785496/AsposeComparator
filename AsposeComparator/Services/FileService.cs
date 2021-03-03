@@ -13,7 +13,7 @@ namespace AsposeComparator.Services
     {
         public FileStream GetFileStream(string fileName)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
+            var filePath = GetPath(fileName);
             return File.OpenRead(filePath);
         }
 
@@ -21,9 +21,8 @@ namespace AsposeComparator.Services
         {
             if (file.Length > 0)
             {
-                var rootFolder = Directory.GetCurrentDirectory();
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                var filePath = Path.Combine(rootFolder, "Uploads", fileName);
+                var filePath = GetPath(fileName);
                 using (var stream = File.Create(filePath))
                 {
                     await file.CopyToAsync(stream);
@@ -52,6 +51,11 @@ namespace AsposeComparator.Services
                 return "image/bmp";
             }
             return "image/*";
+        }
+
+        public string GetPath(string fileName)
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(), "Uploads", fileName);
         }
     }
 }

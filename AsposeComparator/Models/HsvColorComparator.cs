@@ -76,5 +76,12 @@ namespace AsposeComparator.Models
         {
             return tolerance * (_max - _min) / 100.0;
         }
+
+        public double GetDistance(Color color1, Color color2)
+        {
+            var hsv1 = new HsvColor(color1);
+            var hsv2 = new HsvColor(color2);
+            return Math.Sqrt(Math.Pow((hsv1.H - hsv2.H) / 360.0, 2) + Math.Pow(hsv1.S - hsv2.S, 2) + Math.Pow((hsv1.V - hsv2.V) / 255.0, 2));
+        }
     }
 }

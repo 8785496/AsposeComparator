@@ -9,6 +9,5 @@ namespace AsposeComparator.Interfaces
     public interface IGeometryService
     {
         List<Rectangle> GetRectangles(int width, int height, List<Point> points, int maxResults);
-        Task<List<Rectangle>> GetRectanglesAsync(int width, int height, List<Point> points, int maxResults);
     }
 }

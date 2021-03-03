@@ -19,7 +19,7 @@ namespace AsposeComparatorTests
         {
             var color1 = Color.FromArgb(255, 0, 0);
             var color2 = Color.FromArgb(0, 255, 0);
-            Assert.IsFalse(_comparator.IsEqual(color1, color2, 25));
+            Assert.IsFalse(_comparator.IsEqual(color1, color2, 10));
         }
 
         [Test]

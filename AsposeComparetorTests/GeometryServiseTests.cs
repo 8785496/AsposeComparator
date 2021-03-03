@@ -14,15 +14,15 @@ namespace AsposeComparatorTests
             var points = new List<Point>
             {
                 new Point(2, 1),
-                new Point(1, 2),
                 new Point(2, 2),
                 new Point(3, 2),
+                new Point(1, 3),
                 new Point(2, 3),
-                new Point(1, 4),
+                new Point(4, 4),
             };
 
             var rectangles = geometryService.GetRectangles(5, 5, points);
-            Assert.AreEqual(rectangles.Count, 2);
+            Assert.AreEqual(rectangles.Count, 1);
 
             var rect = rectangles[0];
             Assert.AreEqual(rect.X, 1);

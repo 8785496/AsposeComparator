@@ -20,6 +20,13 @@ namespace AsposeComparator.Models
             _eps = 0.001;
         }
 
+        public double GetDistance(Color color1, Color color2)
+        {
+            var rgb1 = ConvertAgrbToRgb(color1);
+            var rgb2 = ConvertAgrbToRgb(color2);
+            return Math.Sqrt(Math.Pow(rgb1.R - rgb2.R, 2) + Math.Pow(rgb1.G - rgb2.G, 2) + Math.Pow(rgb1.B - rgb2.B, 2));
+        }
+
         public bool IsEqual(Color color1, Color color2, int tolerance)
         {
             var rgb1 = ConvertAgrbToRgb(color1);

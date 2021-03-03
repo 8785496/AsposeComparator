@@ -19,7 +19,12 @@ namespace AsposeComparator.Models
             _min = 0.0;
             _eps = 0.001;
         }
-        
+
+        public double GetDistance(Color color1, Color color2)
+        {
+            return Math.Sqrt(Math.Pow(color1.R - color2.R, 2) + Math.Pow(color1.G - color2.G, 2) + Math.Pow(color1.B - color2.B, 2));
+        }
+
         public bool IsEqual(Color color1, Color color2, int tolerance)
         {
             if (tolerance == 0)
